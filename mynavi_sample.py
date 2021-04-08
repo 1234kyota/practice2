@@ -1,7 +1,7 @@
 import os
 from selenium.webdriver import Chrome, ChromeOptions
 import time
-import pandas as pd
+## import pandas as pd
 
 # Chromeを起動する関数
 
@@ -64,7 +64,16 @@ def main():
     for name in name_list:
         exp_name_list.append(name.text)
         print(name.text)
-        
+
+    exp_midashi_list = []
+    # 検索結果の一番上の見出しを取得
+    midashi_list = driver.find_elements_by_class_name("cassetteRecruit__copy")
+
+    # 1ページ分繰り返し
+    print(len(midashi_list))
+    for midashi in midashi_list:
+        exp_midashi_list.append(midashi.text)
+        print(midashi.text)   
 
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
