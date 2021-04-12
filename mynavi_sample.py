@@ -54,26 +54,54 @@ def main():
     # 検索ボタンクリック
     driver.find_element_by_class_name("topSearch__button").click()
 
-    # ページ終了まで繰り返し取得
-    exp_name_list = []
-    # 検索結果の一番上の会社名を取得
-    name_list = driver.find_elements_by_class_name("cassetteRecruit__name")
+        # 検索結果の結果の各コンテンツを取得
 
-    # 1ページ分繰り返し
-    print(len(name_list))
-    for name in name_list:
-        exp_name_list.append(name.text)
-        print(name.text)
+    contents = driver.find_elements_by_class_name("cassetteRecruit__content")
+    company_list = []
+    
+    # contents_count = len(contents)
+    # 3つの要素を取得しリスト化
+    for content in contents[:10]:
 
-    exp_midashi_list = []
-    # 検索結果の一番上の見出しを取得
-    midashi_list = driver.find_elements_by_class_name("cassetteRecruit__copy")
+    #  各会社の情報のリスト作成
+        company = []
+    #  各会社の名前をリストに追加
+        name_text = content.find_element_by_class_name("cassetteRecruit__name").text
+        company.append(name_text)
 
-    # 1ページ分繰り返し
-    print(len(midashi_list))
-    for midashi in midashi_list:
-        exp_midashi_list.append(midashi.text)
-        print(midashi.text)   
+    
+    #  各会社の仕事内容、初任給をリストか
+
+    #  会社情報を取得
+        explanation_list = content.find_elements_by_class_name("tableCondition__head")
+
+    #  会社情報をテキスト化してリスト化
+        explanation_text_list = []
+
+        for explanation in explanation_list:
+            explanation_text_list.append(explanation.text)
+
+    #  テキスト化された会社情報をcompanyリストへ追加
+        if "仕事内容" in explanation_text_list:
+            work = content.find_elements_by_class_name("tableCondition__body")[0].text
+            company.append(work)
+        else:
+            company.append('未記載')
+
+        if "初年度年収" in explanation_text_list:
+            salary = content.find_elements_by_class_name("tableCondition__body")[4].text
+            company.append(salary)
+        else:
+            company.append('未記載')
+        
+        company_list.append(company)
+
+        
+
+
+    print(len(company_list))
+    print(company_list)
+  
 
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
