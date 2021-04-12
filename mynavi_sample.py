@@ -1,7 +1,7 @@
 import os
 from selenium.webdriver import Chrome, ChromeOptions
 import time
-## import pandas as pd
+import pandas as pd
 
 # Chromeを起動する関数
 
@@ -114,15 +114,18 @@ def main():
 
             # 次へボタンクリック
         driver.find_element_by_class_name("iconFont--arrowLeft").click()
-       
-
-
     
     word = input('探したい文字列を入力してください >>')
     for conmpany in company_list:
         for explanation in conmpany:
             if word in explanation:
                 print(conmpany)
+
+    df = pd.DataFrame(company_list, columns=['name', '会社説明','初年度年収'])
+    df.to_csv("./company.csv")
+
+
+    
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
 if __name__ == "__main__":
