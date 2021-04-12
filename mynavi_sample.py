@@ -118,9 +118,11 @@ def main():
 
 
     
-    print(len(company_list))
+    word = input('探したい文字列を入力してください >>')
     for conmpany in company_list:
-        print(conmpany)
+        for explanation in conmpany:
+            if word in explanation:
+                print(conmpany)
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
 if __name__ == "__main__":
