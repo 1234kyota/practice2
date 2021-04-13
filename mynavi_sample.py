@@ -2,6 +2,8 @@ import os
 from selenium.webdriver import Chrome, ChromeOptions
 import time
 import pandas as pd
+import logging
+
 
 # Chromeを起動する関数
 
@@ -57,6 +59,7 @@ def main():
 
     company_list = []
     i = 0
+    log = 0
 
     try:
         while True:
@@ -71,7 +74,15 @@ def main():
 
             #   コンテンツ取得
             for content in contents[:3]:
-
+                
+                # ログ取得
+                log += 1
+                logging.basicConfig(filename='debbug.log', level=logging.DEBUG)
+                logging.info(f'{log}件目')
+                logging.critical('criticalメッセージ')
+                logging.error('errorメッセージ')
+                logging.warning('warningメッセージ')
+                logging.debug('debugメッセージ')
             #  各会社の情報のリスト作成
                 company = []
             #  各会社の名前をリストに追加
