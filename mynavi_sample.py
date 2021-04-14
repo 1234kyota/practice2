@@ -1,8 +1,11 @@
 import os
 from selenium.webdriver import Chrome, ChromeOptions
+from selenium import webdriver
 import time
 import pandas as pd
 import logging
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 
 # Chromeを起動する関数
@@ -33,11 +36,12 @@ def set_driver(driver_path, headless_flg):
 def main():
     search_keyword = "高収入"
     # driverを起動
-    if os.name == 'nt': #Windows
-        driver = set_driver("chromedriver.exe", False)
-    elif os.name == 'posix': #Mac
-        driver = set_driver("chromedriver", False)
+    # if os.name == 'nt': #Windows
+    #     driver = set_driver("chromedriver.exe", False)
+    # elif os.name == 'posix': #Mac
+    #     driver = set_driver("chromedriver", False)
     # Webサイトを開く
+    driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get("https://tenshoku.mynavi.jp/")
     time.sleep(5)
  
@@ -58,22 +62,18 @@ def main():
    # 検索結果の結果の各コンテンツを取得
 
     company_list = []
-    i = 0
     log = 0
 
     try:
         while True:
-            i += 1
+            
             # contents_count = len(contents)
             contents = driver.find_elements_by_class_name("cassetteRecruit__content")
-
             time.sleep(3)
 
-            #   3つの要素を取得しリスト化
-
-
-            #   コンテンツ取得
-            for content in contents[:3]:
+            # 3つの要素を取得しリスト化
+            # コンテンツ取得
+            for content in contents:
                 
                 # ログ取得
                 log += 1
@@ -115,19 +115,17 @@ def main():
                     company.append('未記載')
                 
                 
-                company_list.append(company)
+                company_list.append(company)      
 
-
-                
-            if i > 2:
-                break        
-
-                # 次へボタンクリック
+            # 次へボタンクリック
             driver.find_element_by_class_name("iconFont--arrowLeft").click()
+    
+    except AttributeError:
+        print("完了しました")
+
     except:
         pass
     
-
     word = input('探したい文字列を入力してください >>')
     for conmpany in company_list:
         for explanation in conmpany:
